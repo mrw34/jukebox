@@ -22,5 +22,5 @@ mplayer -really-quiet -cache 64 -slave -input file=/tmp/mplayer -idle &
 And back on your workstation:
 
 ```
-google-chrome http://raspberrypi/
+google-chrome http://raspberrypi:8000/
 ```
