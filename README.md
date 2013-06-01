@@ -1,6 +1,6 @@
 jukebox
 =======
-An minimal web-based MPlayer controller written in Go.
+A minimal web-based MPlayer controller written in Go.
 
 Can be [cross-compiled](https://github.com/davecheney/golang-crosscompile) for Raspberry Pi, Dockstar etc.
 
