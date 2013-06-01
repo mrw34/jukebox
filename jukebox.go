@@ -32,12 +32,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	} else if r.FormValue("f") != "" {
 		ioutil.WriteFile("/tmp/mplayer", []byte("loadfile '"+r.FormValue("f")+"'\n"), 0644)
 	} else if r.FormValue("d") != "" {
-		var folder = r.FormValue("d")
-		var cmd = exec.Command("find", folder, "-type", "f")
+		folder := r.FormValue("d")
+		cmd := exec.Command("find", folder, "-type", "f")
 		var out bytes.Buffer
 		cmd.Stdout = &out
 		cmd.Run()
-		var playlist, _ = ioutil.TempFile("", "jukebox")
+		playlist, _ := ioutil.TempFile("", "jukebox")
 		ioutil.WriteFile(playlist.Name(), []byte(out.String()), 0644)
 		ioutil.WriteFile("/tmp/mplayer", []byte("loadlist '"+playlist.Name()+"'\n"), 0644)
 	} else if r.FormValue("c") != "" {
@@ -48,8 +48,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	var port = flag.Int("port", 80, "port")
-	var root = flag.String("root", "", "root")
+	port := flag.Int("port", 80, "port")
+	root := flag.String("root", "", "root")
 	flag.Parse()
 	if *root == "" {
 		panic("root required")
@@ -58,10 +58,7 @@ func main() {
 	cmd := exec.Command("find", *root, "-mindepth", "2", "-maxdepth", "2", "-type", "d")
 	var out bytes.Buffer
 	cmd.Stdout = &out
-	err := cmd.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
+	cmd.Run()
 	lines := strings.Split(out.String(), "\n")
 
 	albums = make([]Album, len(lines)-1)
@@ -88,7 +85,7 @@ func main() {
 	html = template.Must(template.New("html").Parse(_html))
 
 	http.HandleFunc("/", handler)
-	err = http.ListenAndServe(":"+strconv.Itoa(*port), nil)
+	err := http.ListenAndServe(":"+strconv.Itoa(*port), nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
