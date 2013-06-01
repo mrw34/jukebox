@@ -1,4 +1,4 @@
-jukebox
+Jukebox
 =======
 A minimal web-based MPlayer controller written in Go.
 
