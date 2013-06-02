@@ -53,7 +53,7 @@ func buildTemplates() {
 	const _html = `<!DOCTYPE html>
 <head><title>jukebox</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
 <ul>
-  <li><a href="?c=stop">Stop</a>
+  <li><a href="?c=stop">[stop]</a>
   <li><a href="?u=http://www.bbc.co.uk/radio/listen/live/r4.asx">Radio 4</a>
   <li><a href="?u=http://www.bbc.co.uk/fivelive/live/live_int.asx">Radio 5 live</a>
   <li><a href="?u=http://somafm.com/startstream=groovesalad.pls">Groove Salad</a>
@@ -66,7 +66,7 @@ func findAlbums(root string) {
 	cmd := exec.Command("find", root, "-mindepth", "2", "-maxdepth", "2", "-type", "d")
 	output, err := cmd.Output()
 	if err != nil {
-		log.Fatal("findAlbums: ", err)
+		log.Fatal("find: ", err)
 	}
 	lines := strings.Split(string(output), "\n")
 
@@ -83,12 +83,12 @@ func findAlbums(root string) {
 	}
 }
 
-func startMplayer() {
+func startMPlayer() {
 	cmd := exec.Command("mplayer", "-slave", "-really-quiet", "-cache", "64", "-idle")
 	mplayer, _ = cmd.StdinPipe()
 	err := cmd.Start()
 	if err != nil {
-		log.Fatal("mplayer: ", err)
+		log.Fatal(err)
 	}
 }
 
@@ -102,7 +102,7 @@ func main() {
 
 	buildTemplates()
 	findAlbums(*root)
-	startMplayer()
+	startMPlayer()
 
 	http.HandleFunc("/", handler)
 	err := http.ListenAndServe(":"+strconv.Itoa(*port), nil)
