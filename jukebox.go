@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"flag"
 	"html/template"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -20,6 +21,8 @@ var albums []Album
 
 var html *template.Template
 
+var mplayer io.Writer
+
 func handler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/favicon.ico" {
 		http.NotFound(w, r)
@@ -27,9 +30,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.FormValue("u") != "" {
-		ioutil.WriteFile("/tmp/mplayer", []byte("loadlist "+r.FormValue("u")+"\n"), 0644)
+		mplayer.Write([]byte("loadlist " + r.FormValue("u") + "\n"))
 	} else if r.FormValue("f") != "" {
-		ioutil.WriteFile("/tmp/mplayer", []byte("loadfile '"+r.FormValue("f")+"'\n"), 0644)
+		mplayer.Write([]byte("loadfile '" + r.FormValue("f") + "'\n"))
 	} else if r.FormValue("d") != "" {
 		folder := r.FormValue("d")
 		cmd := exec.Command("find", folder, "-type", "f")
@@ -38,9 +41,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		cmd.Run()
 		playlist, _ := ioutil.TempFile("", "jukebox")
 		ioutil.WriteFile(playlist.Name(), []byte(out.String()), 0644)
-		ioutil.WriteFile("/tmp/mplayer", []byte("loadlist '"+playlist.Name()+"'\n"), 0644)
+		mplayer.Write([]byte("loadlist '" + playlist.Name() + "'\n"))
 	} else if r.FormValue("c") != "" {
-		ioutil.WriteFile("/tmp/mplayer", []byte(r.FormValue("c")+"\n"), 0644)
+		mplayer.Write([]byte(r.FormValue("c") + "\n"))
 	}
 
 	html.Execute(w, albums)
@@ -80,6 +83,15 @@ func findAlbums(root string) {
 	}
 }
 
+func startMplayer() {
+	cmd := exec.Command("mplayer", "-slave", "-really-quiet", "-cache", "64", "-idle")
+	mplayer, _ = cmd.StdinPipe()
+	err := cmd.Start()
+	if err != nil {
+		log.Fatal("mplayer: ", err)
+	}
+}
+
 func main() {
 	port := flag.Int("port", 80, "port")
 	root := flag.String("root", "", "root")
@@ -90,10 +102,11 @@ func main() {
 
 	buildTemplates()
 	findAlbums(*root)
+	startMplayer()
 
 	http.HandleFunc("/", handler)
 	err := http.ListenAndServe(":"+strconv.Itoa(*port), nil)
 	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
+		log.Fatal("http: ", err)
 	}
 }
