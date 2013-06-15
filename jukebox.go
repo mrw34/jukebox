@@ -57,6 +57,7 @@ func buildTemplates() {
   <li><a href="?u=http://www.bbc.co.uk/radio/listen/live/r4.asx">Radio 4</a>
   <li><a href="?u=http://www.bbc.co.uk/fivelive/live/live_int.asx">Radio 5 live</a>
   <li><a href="?u=http://somafm.com/startstream=groovesalad.pls">Groove Salad</a>
+  <li><form><input name="u" placeholder="URL"></form>
   {{range .}}<li><a href="?d={{.Folder}}">{{.Artist}} - {{.Title}}</a>{{end}}
 </ul>`
 	html = template.Must(template.New("html").Parse(_html))
