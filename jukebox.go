@@ -30,7 +30,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.FormValue("u") != "" {
-		mplayer.Write([]byte("loadlist " + r.FormValue("u") + "\n"))
+		mplayer.Write([]byte("loadlist '" + r.FormValue("u") + "'\n"))
 	} else if r.FormValue("f") != "" {
 		mplayer.Write([]byte("loadfile '" + r.FormValue("f") + "'\n"))
 	} else if r.FormValue("d") != "" {
@@ -57,7 +57,7 @@ func buildTemplates() {
   <li><a href="?u=http://www.bbc.co.uk/radio/listen/live/r4.asx">Radio 4</a>
   <li><a href="?u=http://www.bbc.co.uk/fivelive/live/live_int.asx">Radio 5 live</a>
   <li><a href="?u=http://somafm.com/startstream=groovesalad.pls">Groove Salad</a>
-  <li><form><input name="u" placeholder="URL"></form>
+  <li><form><input name="f" placeholder="URL"></form>
   {{range .}}<li><a href="?d={{.Folder}}">{{.Artist}} - {{.Title}}</a>{{end}}
 </ul>`
 	html = template.Must(template.New("html").Parse(_html))
