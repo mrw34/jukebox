@@ -29,6 +29,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if r.URL.RawQuery == "" {
+		html.Execute(w, albums)
+		return
+	}
+
 	if r.FormValue("u") != "" {
 		mplayer.Write([]byte("loadlist '" + r.FormValue("u") + "'\n"))
 	} else if r.FormValue("f") != "" {
@@ -45,8 +50,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	} else if r.FormValue("c") != "" {
 		mplayer.Write([]byte(r.FormValue("c") + "\n"))
 	}
-
-	html.Execute(w, albums)
+	http.Redirect(w, r, "", http.StatusFound)
 }
 
 func buildTemplates() {
