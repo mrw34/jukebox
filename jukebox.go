@@ -69,8 +69,7 @@ func buildTemplates() {
 
 func findAlbums(root string) {
 	cmd := exec.Command("find", root, "-mindepth", "2", "-maxdepth", "2", "-type", "d")
-	output, err := cmd.Output()
-	if err != nil {
+	if output, err := cmd.Output(); err != nil {
 		log.Fatal("find: ", err)
 	}
 	lines := strings.Split(string(output), "\n")
@@ -89,10 +88,9 @@ func findAlbums(root string) {
 }
 
 func startMPlayer() {
-	cmd := exec.Command("mplayer", "-slave", "-really-quiet", "-cache", "64", "-idle")
+	cmd := exec.Command("mplayer", "-slave", "-really-quiet", "-cache", "32", "-idle")
 	mplayer, _ = cmd.StdinPipe()
-	err := cmd.Start()
-	if err != nil {
+	if err := cmd.Start(); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -101,7 +99,7 @@ func main() {
 	port := flag.Int("port", 80, "port")
 	root := flag.String("root", "", "root")
 	flag.Parse()
-	if *root == "" {
+	if len(*root) == 0 {
 		panic("root required")
 	}
 
@@ -110,8 +108,7 @@ func main() {
 	startMPlayer()
 
 	http.HandleFunc("/", handler)
-	err := http.ListenAndServe(":"+strconv.Itoa(*port), nil)
-	if err != nil {
+	if err := http.ListenAndServe(":"+strconv.Itoa(*port), nil); err != nil {
 		log.Fatal("http: ", err)
 	}
 }
