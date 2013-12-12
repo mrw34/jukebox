@@ -59,7 +59,9 @@ func buildTemplates() {
 <ul>
   <li><a href="?c=stop">[stop]</a>
   <li><a href="?u=http://www.bbc.co.uk/radio/listen/live/r4.asx">Radio 4</a>
+  <li><a href="?u=http://bbc.co.uk/radio/listen/live/r4lw.asx">Radio 4 long wave</a>
   <li><a href="?u=http://www.bbc.co.uk/fivelive/live/live_int.asx">Radio 5 live</a>
+  <li><a href="?u=http://bbc.co.uk/radio/listen/live/r5lsp.asx">Radio 5 live sports extra</a>
   <li><a href="?u=http://somafm.com/startstream=groovesalad.pls">Groove Salad</a>
   <li><form><input name="f" placeholder="URL"></form>
   {{range .}}<li><a href="?d={{.Folder}}">{{.Artist}} - {{.Title}}</a>{{end}}
