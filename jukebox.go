@@ -13,11 +13,11 @@ import (
 	"strings"
 )
 
-type Album struct {
+type album struct {
 	Title, Artist, Folder string
 }
 
-var albums []Album
+var albums []album
 
 var html *template.Template
 
@@ -76,11 +76,11 @@ func findAlbums(root string) {
 	}
 	lines := strings.Split(string(output), "\n")
 
-	albums = make([]Album, len(lines)-1)
+	albums = make([]album, len(lines)-1)
 	for i, line := range lines {
 		if len(line) > 0 {
 			parts := strings.Split(line, "/")
-			albums[i] = Album{
+			albums[i] = album{
 				parts[len(parts)-1],
 				parts[len(parts)-2],
 				line,
