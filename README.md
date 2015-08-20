@@ -2,12 +2,12 @@ Jukebox
 =======
 A minimal web-based MPlayer controller written in Go.
 
-Can be [cross-compiled](https://github.com/davecheney/golang-crosscompile) for Raspberry Pi, Dockstar etc.
+Can be cross-compiled for Raspberry Pi, Dockstar etc.
 
 For example, on your workstation:
 
 ```
-GOARM=5 go-linux-arm get github.com/mrw34/jukebox
+GOOS=linux GOARCH=arm GOARM=5 go get github.com/mrw34/jukebox
 scp $GOPATH/bin/linux_arm/jukebox raspberrypi:
 ```
 
