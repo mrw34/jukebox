@@ -11,6 +11,13 @@ GOOS=linux GOARCH=arm GOARM=5 go get github.com/mrw34/jukebox
 scp $GOPATH/bin/linux_arm/jukebox raspberrypi:
 ```
 
+or via Docker:
+
+```
+docker run --rm -v "$PWD":/go -e GOOS=linux -e GOARCH=arm -e GOARM=5 golang go get github.com/mrw34/jukebox
+scp bin/linux_arm/jukebox raspberrypi:
+```
+
 Then on your Pi, assuming you have MPlayer installed and your music is /mnt/music/artist/album/*.mp3:
 
 ```
