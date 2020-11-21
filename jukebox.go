@@ -40,7 +40,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		mplayer.Write([]byte("loadfile '" + r.FormValue("f") + "'\n"))
 	} else if r.FormValue("d") != "" {
 		folder := r.FormValue("d")
-		cmd := fmt.Sprint("find ", folder, " -type f | sort")
+		cmd := fmt.Sprint("find '", folder, "' -type f | sort")
 		out, err := exec.Command("bash", "-c", cmd).Output()
 		if err != nil {
 			log.Fatal(err)
