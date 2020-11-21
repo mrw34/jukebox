@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"flag"
+	"fmt"
 	"html/template"
 	"io"
 	"io/ioutil"
