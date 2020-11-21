@@ -40,12 +40,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		mplayer.Write([]byte("loadfile '" + r.FormValue("f") + "'\n"))
 	} else if r.FormValue("d") != "" {
 		folder := r.FormValue("d")
-		cmd := exec.Command("find", folder, "-type", "f")
-		var out bytes.Buffer
-		cmd.Stdout = &out
-		cmd.Run()
+		cmd := fmt.Sprint("find ", folder, " -type f | sort")
+		out, err := exec.Command("bash", "-c", cmd).Output()
+		if err != nil {
+			log.Fatal(err)
+		}
 		playlist, _ := ioutil.TempFile("", "jukebox")
-		ioutil.WriteFile(playlist.Name(), []byte(out.String()), 0644)
+		ioutil.WriteFile(playlist.Name(), out, 0644)
 		mplayer.Write([]byte("loadlist '" + playlist.Name() + "'\n"))
 	} else if r.FormValue("c") != "" {
 		mplayer.Write([]byte(r.FormValue("c") + "\n"))
