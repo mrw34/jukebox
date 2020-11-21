@@ -57,7 +57,7 @@ func buildTemplates() {
 	const _html = `<!DOCTYPE html>
 <head><title>jukebox</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
 <ul>
-  <li><a href="?c=stop">[stop]</a>
+  <li><a href="?c=stop">[stop]</a> <a href="?c=pt_step%20-1">[prev]</a> <a href="?c=pt_step%201">[next]</a>
   <li><a href="?f=http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_fourfm.m3u8">Radio 4</a>
   <li><a href="?f=http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_five_live.m3u8">Radio 5 live</a>
   <li><a href="?f=http://timesradio.wireless.radio/stream">Times Radio</a>
